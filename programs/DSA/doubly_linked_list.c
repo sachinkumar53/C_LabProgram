@@ -39,10 +39,14 @@ void display() {
 
 void insert_front() {
     newnode = (node *) malloc(sizeof(node));
-    printf("\n Enter SSN,Name,Department,Designation, Sal, Phone no.\n");
+    printf("\n Enter SSN, Name, Department, Designation, Sal, Phone no.\n");
     scanf("%s %s %s %s %s %s", newnode->ssn, newnode->name, newnode->dept, newnode->desig, newnode->sal,newnode->phone);
     newnode->plink = NULL;
     newnode->nlink = first;
+    
+    if (first != NULL)
+        first->plink = newnode;
+
     first = newnode;
 }
 
@@ -89,15 +93,57 @@ void delete_rear() {
     while (temp->nlink != NULL)
         temp = temp->nlink;
 
-    (temp->plink)->nlink = NULL;
+    if (temp->plink == NULL)
+        first = NULL;
+    else
+        (temp->plink)->nlink = NULL;
+        
     free(temp);
+}
+
+void double_ended_queue(){
+    int ch;
+    while (1)
+    {
+        printf("\nDOUBLE ENDED QUEUE MENU");
+        printf("\n1. Insert from front\n2. Insert from rear\n3. Delete from front\n4. Delete from rear\n5. Display\n6. Back to main menu\n");
+        printf("Enter your choice: ");
+        scanf("%d",&ch);
+        switch (ch)
+        {
+        case 1:
+            insert_front();
+            break;
+        
+        case 2:
+            insert_rear();
+            break;
+        
+        case 3:
+            delete_front();
+            break;
+        
+        case 4:
+            delete_rear();
+            break;
+        
+        case 5: display();
+            break;
+
+        case 6: return;
+
+        default: printf("\nInvalid choice\n");
+            break;
+        }
+    }
+    
 }
 
 int main() {
     int ch;
     while (1) {
         printf("\nEMPLOYEE DATA USING DOUBLY LINKED LIST\n");
-        printf("1. Create a list of employees\n2. Display list\n3. Insert item at front\n4. Delete item from front\n5. Insert item at rear\n6. Delete item from rear\n7. Exit\n");
+        printf("1. Create a list of employees\n2. Display list\n3. Insert item at front\n4. Delete item from front\n5. Insert item at rear\n6. Delete item from rear\n7. Double Ended Queue\n8. Exit\n");
         printf("\nEnter your choice: ");
         scanf("%d", &ch);
 
@@ -120,7 +166,12 @@ int main() {
             case 6:
                 delete_rear();
                 break;
+            
             case 7:
+                double_ended_queue();
+                break;
+            
+            case 8:
                 exit(0);
             default:
                 printf("Invalid choice\n");
